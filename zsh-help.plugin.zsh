@@ -4,16 +4,17 @@
 0="${${(M)0:#/*}:-$PWD/$0}"
 
 if (($+commands[bat])); then
-  # ignore $@ to make `-help foobar` work
-  function -help() {
+  # ignore $@ to make `--help foobar` work
+  function -help-() {
     bat --color=always -pplhelp
   }
   function -help-alias() {
     for opt in $@; do
-      alias -g -- "$opt=\\$opt | -help"
+      alias -g -- "$opt=\\$opt | -help-"
     done
   }
-  -help-alias --help
+  # llvm
+  -help-alias --help --help-list --help-hidden --help-list-hidden -help -help-list -help-hidden -help-list-hidden
   # man
   -help-alias '-\?'
   # ccstudio
