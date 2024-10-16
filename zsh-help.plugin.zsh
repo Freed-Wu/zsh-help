@@ -10,7 +10,7 @@ if (($+commands[bat])); then
   }
   function -help-alias() {
     for opt in $@; do
-      alias -g -- "$opt=\\$opt | -help-"
+      alias -g -- "$opt=\\$opt 2>&1 | -help-"
     done
   }
   # llvm
