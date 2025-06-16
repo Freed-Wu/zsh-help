@@ -8,12 +8,20 @@ if (($+commands[bat])); then
   function -help-() {
     bat --color=always -pplhelp
   }
+
+  # Safe help wrapper to avoid global alias issues
+  # Usage: run-help ls
+  function run-help() {
+    "$@" --help 2>&1 | -help-
+  }
+
+  # Replaces the original -help-alias global alias system with safe aliases
   function -help-alias() {
     for opt in $@; do
-      # use |& instead of 2>&1 | to safely redirect stderr and stdout together
-      alias -g -- "$opt=\\$opt |& -help-"
+      alias -- "$opt=run-help"
     done
   }
+
   # llvm
   -help-alias --help --help-list --help-hidden --help-list-hidden -help -help-list -help-hidden -help-list-hidden
   # man
@@ -24,5 +32,6 @@ if (($+commands[bat])); then
   -help-alias --longhelp --fullhelp
   # gnome
   -help-alias --help-all --help-gapplication --help-gtk
+
   unfunction -- -help-alias
 fi
