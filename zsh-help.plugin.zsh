@@ -10,7 +10,8 @@ if (($+commands[bat])); then
   }
   function -help-alias() {
     for opt in $@; do
-      alias -g -- "$opt=\\$opt 2>&1 | -help-"
+      # use |& instead of 2>&1 | to safely redirect stderr and stdout together
+      alias -g -- "$opt=\\$opt |& -help-"
     done
   }
   # llvm
